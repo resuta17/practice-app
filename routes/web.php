@@ -14,6 +14,11 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/image', function () {
+    return response()->file(storage_path('app/public/HEBRES_JOHN_LESTER.jpg'));
+});
+
+
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
