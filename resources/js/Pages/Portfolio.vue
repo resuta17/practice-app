@@ -84,7 +84,7 @@ export default {
                 </div>
             </header>
 
-            <body>
+            <main>
                 <section id="about" class="mt-10 flex items-top gap-6 px-4">
                     <div class="ml-44">
                         <img :src="`/image`" alt="Profile Picture" class="w-48 h-48 object-cover rounded-full" />
@@ -140,7 +140,7 @@ export default {
                         Socials
                     </p>
                 </section>
-            </body>
+            </main>
 
         </div>
     </div>
