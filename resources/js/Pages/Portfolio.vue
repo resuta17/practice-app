@@ -17,6 +17,7 @@ export default {
             activeNav: 'about',
             isDarkMode: true,
             current: 0,
+            isMobileMenuOpen: false,
       certificates: [
         {
           title: 'Introduction to Git and GitHub',
@@ -71,6 +72,8 @@ export default {
     methods: {
         setActive(section) {
             this.activeNav = section;
+            this.activeNav = section;
+         this.isMobileMenuOpen = false;
         },
         toggleMode() {
             this.isDarkMode = !this.isDarkMode;
@@ -80,8 +83,11 @@ export default {
         },
         prev() {
             this.current = (this.current - 1 + this.certificates.length) % this.certificates.length;
-        }
-
+        }, 
+        toggleMenu() {
+            this.isMobileMenuOpen = !this.isMobileMenuOpen;
+        },
+ 
     },
 
     mounted() {
@@ -91,55 +97,83 @@ export default {
 </script>
 
 <template>
-    <div :class="[backgroundColor, 'min-h-screen', textColor]">
+    <div :class="[backgroundColor, textColor]" class="min-h-screen overflow-x-hidden">
 
-        <header class="bg-teal-900  shadow h-16 flex justify-between items-center px-4 sticky top-0 z-50">
-            <div class="ml-8">
-                <h1 class="text-white font-bold text-lg">
+
+       <header class="bg-teal-900 shadow h-16 flex justify-between items-center px-4 sticky top-0 z-50">
+            <div class="ml-2 md:ml-8 flex items-center space-x-2">
+                <div>
+                <h1 class="text-white font-bold text-base md:text-lg">
                     John Lester H. Hebres
                 </h1>
-                <p class="text-white text-sm">
+                <p class="text-white text-xs md:text-sm">
                     BSCS Graduate
                 </p>
+                </div>
             </div>
 
-            <div class="flex items-center space-x-4 mr-8">
+            <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+
+            <nav class="hidden md:flex flex-wrap items-center justify-end space-x-2 md:space-x-4 mr-4">
                 <NavLink @click="setActive('about')" href="#about" :active="activeNav === 'about'" class="text-white">
-                    About Me
+                About Me
                 </NavLink>
                 <NavLink @click="setActive('exp')" href="#experience" :active="activeNav === 'exp'" class="text-white">
-                    Experience
+                Experience
                 </NavLink>
                 <NavLink @click="setActive('educ')" href="#education" :active="activeNav === 'educ'" class="text-white">
+                Education
+                </NavLink>
+                <NavLink @click="setActive('cert')" href="#certification" :active="activeNav === 'cert'" class="text-white">
+                Certificates
+                </NavLink>
+                <NavLink @click="setActive('Skills')" href="#Skills" :active="activeNav === 'Skills'" class="text-white">
+                Skills
+                </NavLink>
+                <NavLink @click="setActive('Projects')" href="#Projects" :active="activeNav === 'Projects'" class="text-white">
+                Projects
+                </NavLink>
+                <img :src="modeImg" title="light dark icons" class="w-8 h-8 cursor-pointer" @click="toggleMode" />
+            </nav>
+
+            <transition name="fade">
+                <div v-if="isMobileMenuOpen" class="absolute top-16 left-0 w-full bg-teal-900 flex flex-col items-start px-4 py-4 space-y-2 md:hidden z-40">
+                <NavLink @click="setActive('about'); isMobileMenuOpen = false" href="#about" :active="activeNav === 'about'" class="text-white w-full">
+                    About Me
+                </NavLink>
+                <NavLink @click="setActive('exp'); isMobileMenuOpen = false" href="#experience" :active="activeNav === 'exp'" class="text-white w-full">
+                    Experience
+                </NavLink>
+                <NavLink @click="setActive('educ'); isMobileMenuOpen = false" href="#education" :active="activeNav === 'educ'" class="text-white w-full">
                     Education
                 </NavLink>
-                <NavLink @click="setActive('cert')" href="#certification" :active="activeNav === 'cert'"
-                    class="text-white">
+                <NavLink @click="setActive('cert'); isMobileMenuOpen = false" href="#certification" :active="activeNav === 'cert'" class="text-white w-full">
                     Certificates
                 </NavLink>
-                <NavLink @click="setActive('Skills')" href="#Skills" :active="activeNav === 'Skills'"
-                    class="text-white">
+                <NavLink @click="setActive('Skills'); isMobileMenuOpen = false" href="#Skills" :active="activeNav === 'Skills'" class="text-white w-full">
                     Skills
                 </NavLink>
-                <NavLink @click="setActive('Projects')" href="#Projects" :active="activeNav === 'Projects'"
-                    class="text-white">
+                <NavLink @click="setActive('Projects'); isMobileMenuOpen = false" href="#Projects" :active="activeNav === 'Projects'" class="text-white w-full">
                     Projects
                 </NavLink>
-
-                <img :src="modeImg" title="light dark icons" class="w-8 h-8" @click="toggleMode"></img>
-            </div>
-        </header>
+                <img :src="modeImg" title="light dark icons" class="w-8 h-8 mt-2 cursor-pointer" @click="toggleMode" />
+                </div>
+            </transition>
+            </header>
 
         <main>
-            <section class="h-screen flex items-center justify-center space-x-52 z-10">
-                <!-- <div class="ml-56">
-                        <img :src="`/image`" alt="Profile Picture" class="w-56 h-89 object-cover rounded" />
-                    </div> -->
+            <section class="min-h-screen flex flex-col-reverse md:flex-row items-center justify-center px-6 gap-12 md:gap-52 z-10">
+
                 <div>
                     <h1 class="text-4xl md:text-5xl font-bold leading-snug animate__animated animate__jackInTheBox">
                         Hi,<br>
                         I'm <span class="text-teal-700 font-semibold">Lester</span><br>
-                        Aspirant Web Developer
+                        Aspiring Web Developer
                     </h1>
                     <div class="flex justify-center item-center mt-16">
                         <button
@@ -147,6 +181,7 @@ export default {
                             Contact me
                         </button>
                     </div>
+                    
                     <div class="mt-16 flex justify-center items-center space-x-6 animate__animated animate__slideInUp">
                         <a href="https://www.linkedin.com/in/jlhebres/" target="_blank" class="w-10 h-10 flex items-center justify-center">
                             <img
@@ -176,38 +211,41 @@ export default {
 
             </section>
 
-            <section id="about" class="mt-10 ">
-                <div class="text-center text-xl font-semibold mb-20 text-teal-700">
+           <section id="about" class="mt-10 px-4">
+                <div class="text-center text-xl font-semibold mb-10 text-teal-700">
                     <p>About me</p>
                     <hr class="border-t-2 border-teal-700 mt-2 w-24 mx-auto" />
                 </div>
-                <div class="flex items-top gap-24 px-4">
-                    <div class="ml-96">
-                        <img :src="`/image`" alt="Profile Picture" class="w-56 h-56 object-cover rounded-full" />
+
+                <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-12">
+                    <div class="flex-shrink-0">
+                    <img
+                        :src="`/image`"
+                        alt="Profile Picture"
+                        class="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 object-cover rounded-full mx-auto md:mx-0"
+                    />
                     </div>
-                    <div class="max-w-xl">
 
-                        <p class="text-lg leading-relaxed">
-                            I'm <strong>John Lester Hababag Hebres</strong>, a <em>BSCS cum laude</em> graduate with
-                            a strong interest in web development. I'm currently focusing on learning and building
-                            projects
-                            with <strong>Laravel</strong> and <strong>Vue.js</strong> to sharpen my skills in
-                            full-stack
-                            development.
-                        </p>
+                    <div class="text-center md:text-left">
+                    <p class="text-base sm:text-lg leading-relaxed">
+                        I'm <strong>John Lester Hababag Hebres</strong>, a <em>BSCS cum laude</em> graduate with
+                        a strong interest in web development. I'm currently focusing on learning and building
+                        projects with <strong>Laravel</strong> and <strong>Vue.js</strong> to sharpen my skills in
+                        full-stack development.
+                    </p>
 
-                        <div class="flex justify-center item-center mt-8">
-                            <button
-                                class="inline-flex items-center rounded-md border border-transparent bg-gray-700 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-teal-900">
-                                Download CV
-                            </button>
-                        </div>
+                    <div class="flex justify-center md:justify-start mt-6">
+                        <button
+                        class="inline-flex items-center rounded-md border border-transparent bg-gray-700 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-teal-900"
+                        >
+                        Download CV
+                        </button>
+                    </div>
                     </div>
                 </div>
-
             </section>
-
-            <section id="experience" class="mt-36">
+            
+            <section id="experience" class="mt-36 m-5">
                 <div class="text-center text-xl font-semibold mb-16 text-teal-700">
                     <p>Experience</p>
                     <hr class="border-t-2 border-teal-700 mt-2 w-24 mx-auto" />
@@ -232,12 +270,9 @@ export default {
                         </div>
                     </div>
                 </div>
-
-
-
             </section>
 
-            <section id="education" class="mt-36">
+            <section id="education" class="mt-36 m-5">
                 <div class="text-center text-xl font-semibold mb-16 text-teal-700">
                     <p>Education</p>
                     <hr class="border-t-2 border-teal-700 mt-2 w-24 mx-auto" />
@@ -279,7 +314,7 @@ export default {
             </section>
 
 
-            <section id="certification" class="mt-36 ">
+            <section id="certification" class="mt-36">
                 <div class="text-center text-xl font-semibold mb-20 text-teal-700">
                     <p>Certificates</p>
                     <hr class="border-t-2 border-teal-700 mt-2 w-24 mx-auto" />
@@ -300,8 +335,8 @@ export default {
                         <img :src="certificates[current].img" class="w-102 h-78 mx-auto" />
                         </a>
                         <p class="text-xs text-gray-500 mt-2">
-                        Issued {{ certificates[current].issued }}<br />
-                        Credentials ID {{ certificates[current].id }}
+                            Issued {{ certificates[current].issued }}<br />
+                            Credentials ID {{ certificates[current].id }}
                         </p>
                     </div>
                     <button
@@ -321,7 +356,6 @@ export default {
                         :class="{ 'ring-2 ring-teal-500': current === index }"
                     />
                 </div>
-                
             </section>
 
             <section id="Skills" class="mt-36">
@@ -330,45 +364,45 @@ export default {
                     <hr class="border-t-2 border-teal-700 mt-2 w-12 mx-auto"/> 
                 </div>
                 <div class="flex justify-center items-center">
-                    <ul class="grid grid-cols-2 gap-x-40 gap-y-5 list-none text-xl ">
-                        <li class="flex items-center gap-2 hover:text-2xl">
+                   <ul class="grid grid-cols-2 gap-x-4 gap-y-3 sm:gap-x-20 sm:gap-y-4 md:gap-x-40 md:gap-y-5 list-none text-xl">
+                        <li class="flex items-center gap-2 transform transition-transform duration-200 hover:scale-125">
                             <img :src="'https://cdn-icons-png.flaticon.com/128/1051/1051277.png'" class="w-6 h-6" />
                             HTML
                         </li>
-                        <li class="flex items-center gap-2 ">
+                        <li class="flex items-center gap-2 transform transition-transform duration-200 hover:scale-125">
                             <img :src="'https://cdn-icons-png.flaticon.com/128/5968/5968292.png'" class="w-6 h-6" />
                             JavaScript
                         </li>
-                        <li class="flex items-center gap-2">
+                        <li class="flex items-center gap-2 transform transition-transform duration-200 hover:scale-125">
                             <img :src="'https://cdn-icons-png.flaticon.com/128/732/732190.png'" class="w-6 h-6" />
                             CSS
                         </li>
-                        <li class="flex items-center gap-2">
+                        <li class="flex items-center gap-2 transform transition-transform duration-200 hover:scale-125">
                             <img :src="'https://cdn-icons-png.flaticon.com/128/919/919830.png'" class="w-6 h-6" />
                             PHP
                         </li>
-                        <li class="flex items-center gap-2">
+                        <li class="flex items-center gap-2 transform transition-transform duration-200 hover:scale-125">
                             <img :src="'https://cdn-icons-png.flaticon.com/128/6132/6132221.png'" class="w-6 h-6" />
                             C#
                         </li>
-                        <li class="flex items-center gap-2">
+                        <li class="flex items-center gap-2 transform transition-transform duration-200 hover:scale-125">
                             <img :src="'https://cdn-icons-png.flaticon.com/128/16845/16845837.png'" class="w-6 h-6" />
                             MySQL
                         </li>
-                        <li class="flex items-center gap-2">
+                        <li class="flex items-center gap-2 transform transition-transform duration-200 hover:scale-125">
                             <img :src="'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1184px-Vue.js_Logo_2.svg.png'"
                                 class="w-4 h-4" />
                             Vue.js
                         </li>
-                        <li class="flex items-center gap-2">
+                        <li class="flex items-center gap-2 transform transition-transform duration-200 hover:scale-125">
                             <img :src="'https://download.logo.wine/logo/Laravel/Laravel-Logo.wine.png'" class="w-8 h-8">
                             Laravel
                         </li>
-                        <li class="flex items-center gap-2">
+                        <li class="flex items-center gap-2 transform transition-transform duration-200 hover:scale-125">
                             <img :src="'https://cdn-icons-png.flaticon.com/128/4494/4494740.png'" class="w-4 h-4">
                             Git
                         </li>
-                        <li class="flex items-center gap-2">
+                        <li class="flex items-center gap-2 transform transition-transform duration-200 hover:scale-125">
                             <img :src="'https://pngimg.com/d/linux_PNG27.png'" class="w-8 h-8">
                             Linux
                         </li>
@@ -385,12 +419,61 @@ export default {
             </section>
             
             <section id="contact" class="mt-36 bg-teal-900 p-6">
-                <div class="text-center text-xl font-semibold mb-4 text-white">
-                    <p>Contact Me</p>
+                <div class=" mb-4 text-center ">
+                    <p class=" text-xl font-semibold text-white">Contact Me</p>
+                    <p>I'm excited to work with you!</p>
                 </div>
-                <div class="flex justify-center text-gray-900">
-                    <input>
-                </div>
+                <div class="flex flex-col justify-start items-center text-gray-900 space-y-4">
+                    <input
+                        placeholder="Name"
+                        class="border border-gray-300 rounded px-4 py-2 w-64 text-sm"
+                    />
+                    <input
+                        placeholder="Email"
+                        class="border border-gray-300 rounded px-4 py-2 w-64 text-sm"
+                    />
+                    <input
+                        placeholder="Subject"
+                        class="border border-gray-300 rounded px-4 py-2 w-64 text-sm"
+                    />
+                    <textarea
+                        placeholder="Message"
+                        rows="5"
+                        class="border border-gray-300 rounded px-4 py-2 w-64 resize-none text-sm"
+                    ></textarea>
+                    <div class="flex justify-end">
+                        <button class="border border-gray-300 rounded px-4 py-2 w-64 text-white bg-gray-800 text-sm">
+                            Submit
+                        </button>
+                    </div>
+                
+                </div> 
+                    <div class="mt-5 flex justify-center items-center space-x-6 animate__animated animate__slideInUp">
+                        <a href="https://www.linkedin.com/in/jlhebres/" target="_blank" class="w-10 h-10 flex items-center justify-center">
+                            <img
+                            :src="'https://cdn-icons-png.flaticon.com/128/4494/4494497.png'"
+                            alt="LinkedIn"
+                            class="w-8 h-8 transform transition-transform duration-200 hover:scale-125"
+                            />
+                        </a>
+
+                        <a href="https://www.facebook.com/jl.hebres1" target="_blank" class="w-10 h-10 flex items-center justify-center">
+                            <img
+                            :src="'https://cdn-icons-png.flaticon.com/128/5968/5968764.png'"
+                            alt="Facebook"
+                            class="w-8 h-8 transform transition-transform duration-200 hover:scale-125"
+                            />
+                        </a>
+
+                        <a href="https://github.com/resuta17" target="_blank" class="w-10 h-10 flex items-center justify-center">
+                            <img
+                            :src="'https://cdn-icons-png.flaticon.com/128/5968/5968896.png'"
+                            alt="GitHub"
+                            class="w-8 h-8 transform transition-transform duration-200 hover:scale-125"
+                            />
+                        </a>
+                    </div>
+                
             </section>
         </main>
 
